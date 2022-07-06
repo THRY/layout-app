@@ -1,12 +1,8 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import ChangeTitle from '../components/ChangeTitle';
 import ClientOnly from '../components/ClientOnly';
 import LogIn from '../components/LogIn';
-import PlaceImages from '../components/PlaceImages';
-import styles from '../styles/Home.module.css';
 
-export default function Home() {
+export default function Login() {
   return (
     <div>
       <Head>
@@ -17,8 +13,7 @@ export default function Home() {
 
       <main>
         <ClientOnly>
-          <PlaceImages />
-          <ChangeTitle />
+          <LogIn />
         </ClientOnly>
       </main>
 
