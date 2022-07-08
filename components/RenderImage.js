@@ -7,10 +7,14 @@ const style = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  border: 'solid 1px #ddd',
+  border: '0',
   background: 'transparent',
   zIndex: 2,
   backgroundSize: 'cover',
+
+  '&:hover': {
+    opacity: '0.6',
+  },
 };
 
 const UPDATE_MEDIA_ITEM = gql`
@@ -24,7 +28,7 @@ const UPDATE_MEDIA_ITEM = gql`
   }
 `;
 
-export default function Render({ image, projectId }) {
+export default function RenderImage({ image, projectId, setIsSaving }) {
   console.log(projectId);
   const [isChanging, setChange] = useState(false);
 
@@ -33,9 +37,11 @@ export default function Render({ image, projectId }) {
 
   if (image.description && image.description !== '') {
     let trimmedCoords = jQuery(image.description).text();
-    trimmedCoords = trimmedCoords.replace(/“|”/g, `"`);
-    imageCoords = JSON.parse(trimmedCoords);
-    imageCoords = imageCoords[projectId];
+    trimmedCoords = trimmedCoords.replace(/“|”|″/g, `"`);
+    // achtung trimmed cords wird wieder gespeichert in media item description
+    console.log(trimmedCoords);
+    trimmedCoords = JSON.parse(trimmedCoords);
+    imageCoords = trimmedCoords[projectId];
   }
 
   const [state, setState] = useState({
@@ -48,11 +54,24 @@ export default function Render({ image, projectId }) {
   const [updateMediaItem, { data, loading, error }] =
     useMutation(UPDATE_MEDIA_ITEM);
 
+  // prevent updating image on initial render
+  const firstUpdate = useRef(true);
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+  });
+
   useEffect(() => {
-    if (isChanging == false) {
+    if (isChanging == false && firstUpdate.current == false) {
       updateImage();
     }
   }, [isChanging]);
+
+  useEffect(() => {
+    setIsSaving(loading);
+  }, [loading, error]);
 
   const updateImage = async function () {
     console.log('update image');
@@ -73,32 +92,34 @@ export default function Render({ image, projectId }) {
   };
 
   return (
-    <div>
-      <Rnd
-        style={{ ...style, backgroundImage: `url(${image.sourceUrl})` }}
-        size={{ width: state.width, height: state.height }}
-        position={{ x: state.x, y: state.y }}
-        onDrag={(e, d) => {
-          setChange(true);
-        }}
-        onDragStop={(e, d) => {
-          setState((state) => ({ ...state, x: d.x, y: d.y }));
-          setChange(false);
-        }}
-        lockAspectRatio={true}
-        onResize={() => {
-          setChange(true);
-        }}
-        onResizeStop={(e, direction, ref, delta, position) => {
-          setState((state) => ({
-            ...position,
-            width: `${ref.style.width}`,
-            height: `${ref.style.height}`,
-            // left: parseInt(ref.style.width.replace('px', '')) / 1000,
-          }));
-          setChange(false);
-        }}
-      ></Rnd>
-    </div>
+    <Rnd
+      style={{ ...style, backgroundImage: `url(${image.sourceUrl})` }}
+      size={{ width: state.width, height: state.height }}
+      position={{ x: state.x, y: state.y }}
+      minWidth={200}
+      maxWidth={'100%'}
+      bounds={'parent'}
+      // dragGrid={[10, 10]}
+      onDrag={(e, d) => {
+        setChange(true);
+      }}
+      onDragStop={(e, d) => {
+        setState((state) => ({ ...state, x: d.x, y: d.y }));
+        setChange(false);
+      }}
+      lockAspectRatio={true}
+      onResize={() => {
+        setChange(true);
+      }}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        setState((state) => ({
+          ...position,
+          width: `${ref.style.width}`,
+          height: `${ref.style.height}`,
+          // left: parseInt(ref.style.width.replace('px', '')) / 1000,
+        }));
+        setChange(false);
+      }}
+    ></Rnd>
   );
 }
