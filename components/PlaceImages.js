@@ -18,10 +18,12 @@ export const QUERY_PROJEKT = gql`
           id
           sourceUrl
           description
+          mimeType
           mediaDetails {
             height
             width
           }
+          title(format: RENDERED)
         }
       }
     }

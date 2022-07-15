@@ -17,45 +17,41 @@ const style = {
   },
 };
 
-const UPDATE_MEDIA_ITEM = gql`
-  mutation UPDATE_MEDIA_ITEM($id: ID!, $description: String!) {
-    updateMediaItem(input: { id: $id, description: $description }) {
+const UPDATE_PROJECT = gql`
+  mutation UPDATE_PROJECT($id: ID!, $storycoords: String!) {
+    updateProjekt(input: { id: $id, homecoords: $storycoords }) {
       clientMutationId
-      mediaItem {
-        description
-      }
     }
   }
 `;
 
-export default function RenderImage({ image, projectId, setIsSaving }) {
+export default function RenderProject({
+  image,
+  projectId,
+  setIsSaving,
+  homecoords,
+}) {
   console.log(image);
   const [isChanging, setChange] = useState(false);
 
   let ratio = image.mediaDetails.height / image.mediaDetails.width;
-  let imageCoords = null;
+  let projectCoords = null;
 
-  if (image.description && image.description !== '') {
-    let trimmedCoords = jQuery(image.description).text();
-    trimmedCoords = trimmedCoords.replace(/“|”|″/g, `"`);
-    // achtung trimmed cords wird wieder gespeichert in media item description
-    console.log(trimmedCoords);
-    trimmedCoords = JSON.parse(trimmedCoords);
-    imageCoords = trimmedCoords[projectId];
+  if (homecoords && homecoords !== '') {
+    projectCoords = JSON.parse(homecoords);
   }
 
   const [state, setState] = useState({
-    width: imageCoords ? imageCoords.width : 200,
-    height: imageCoords ? imageCoords.height : 200 * ratio,
-    x: imageCoords ? imageCoords.x : 20,
-    y: imageCoords ? imageCoords.y : 20,
+    width: projectCoords ? projectCoords.width : 200,
+    height: projectCoords ? projectCoords.height : 200 * ratio,
+    x: projectCoords ? projectCoords.x : 20,
+    y: projectCoords ? projectCoords.y : 20,
   });
 
   const imageUrl =
     image.mimeType == 'video/mp4' ? '/video_placeholder.jpeg' : image.sourceUrl;
 
-  const [updateMediaItem, { data, loading, error }] =
-    useMutation(UPDATE_MEDIA_ITEM);
+  const [updateProjekt, { data, loading, error }] = useMutation(UPDATE_PROJECT);
 
   // prevent updating image on initial render
   const firstUpdate = useRef(true);
@@ -77,19 +73,12 @@ export default function RenderImage({ image, projectId, setIsSaving }) {
   }, [loading, error]);
 
   const updateImage = async function () {
-    console.log('update image');
-    console.log(state);
-    let coords = {
-      ...trimmedCoords,
-      [projectId]: {
-        ...state,
-      },
-    };
+    console.log('update projekt');
 
-    const res = await updateMediaItem({
+    const res = await updateProjekt({
       variables: {
-        id: image.id,
-        description: JSON.stringify(coords),
+        id: projectId,
+        storycoords: JSON.stringify(state),
       },
     });
   };
