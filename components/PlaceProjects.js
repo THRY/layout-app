@@ -6,6 +6,9 @@ import { useState } from 'react';
 import RenderImage from './RenderImage';
 import RenderLead from './RenderLead';
 import RenderProject from './RenderProject';
+import StyledLayoutContainer from './styles/StyledLayoutContainer';
+import StyledLayoutPattern from './styles/StyledLayoutPattern';
+import PlacingHeader from './PlacingHeader';
 
 export const QUERY_PAGE = gql`
   query QUERY_PAGE($id: ID!) {
@@ -45,7 +48,7 @@ export const QUERY_PAGE = gql`
   }
 `;
 
-export default function PlaceProjects({ pageId }) {
+export default function PlaceProjects({ pageId, permalink }) {
   console.log(pageId);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -72,32 +75,26 @@ export default function PlaceProjects({ pageId }) {
   // return <p>hallo</p>;
   return (
     <div>
-      <h1
-        className='text-center'
-        style={{
-          width: '1000px',
-          margin: '35px',
-        }}
-      >
-        Layout for {data.page.title}
-      </h1>
-      <p
-        style={{
-          width: '1000px',
-          margin: '0 35px',
-        }}
-        className='text-center'
-      >
-        {isSaving ? 'updating...' : 'saved!'}
-      </p>
-      <div
-        style={{
-          width: '1000px',
-          height: '4000px',
-          margin: '35px',
-          outline: '3px solid lightgrey',
-        }}
-      >
+      <PlacingHeader
+        loading={isSaving}
+        title={data.page.title}
+        permalink={permalink}
+      />
+      <StyledLayoutContainer>
+        <StyledLayoutPattern>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </StyledLayoutPattern>
         {data &&
           data.page.acf_home.storyselection.map((story, index) => {
             if (story.featuredImage || story.acf.featuredVideo) {
@@ -116,7 +113,7 @@ export default function PlaceProjects({ pageId }) {
               );
             }
           })}
-      </div>
+      </StyledLayoutContainer>
     </div>
   );
 }

@@ -18,8 +18,10 @@ const style = {
 };
 
 const UPDATE_MEDIA_ITEM = gql`
-  mutation UPDATE_MEDIA_ITEM($id: ID!, $description: String!) {
-    updateMediaItem(input: { id: $id, description: $description }) {
+  mutation UPDATE_MEDIA_ITEM($id: ID!, $description: String!, $coords: String) {
+    updateMediaItem(
+      input: { id: $id, description: $description, coords: $coords }
+    ) {
       clientMutationId
       mediaItem {
         description
@@ -34,6 +36,7 @@ export default function RenderImage({ image, projectId, setIsSaving }) {
 
   let ratio = image.mediaDetails.height / image.mediaDetails.width;
   let imageCoords = null;
+  let trimmedCoords = {};
 
   if (image.description && image.description !== '') {
     let trimmedCoords = jQuery(image.description).text();
@@ -79,6 +82,7 @@ export default function RenderImage({ image, projectId, setIsSaving }) {
   const updateImage = async function () {
     console.log('update image');
     console.log(state);
+
     let coords = {
       ...trimmedCoords,
       [projectId]: {
@@ -90,6 +94,7 @@ export default function RenderImage({ image, projectId, setIsSaving }) {
       variables: {
         id: image.id,
         description: JSON.stringify(coords),
+        coords: 'gugus',
       },
     });
   };

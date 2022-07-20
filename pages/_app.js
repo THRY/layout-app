@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import '../components/styles/overrides.scss';
 import '../styles/globals.css';
 import { ApolloProvider } from '@apollo/client';
 import client from '../apollo-client';

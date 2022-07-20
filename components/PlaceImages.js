@@ -5,6 +5,10 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import RenderImage from './RenderImage';
 import RenderLead from './RenderLead';
+import styled from 'styled-components';
+import StyledLayoutContainer from './styles/StyledLayoutContainer';
+import StyledLayoutPattern from './styles/StyledLayoutPattern';
+import PlacingHeader from './PlacingHeader';
 
 export const QUERY_PROJEKT = gql`
   query QUERY_PROJEKT($id: ID!) {
@@ -16,6 +20,8 @@ export const QUERY_PROJEKT = gql`
         leadpos
         fotos {
           id
+          guid
+          databaseId
           sourceUrl
           description
           mimeType
@@ -30,15 +36,7 @@ export const QUERY_PROJEKT = gql`
   }
 `;
 
-// const UPDATE_PROJECT = gql`
-//   mutation UPDATE_PROJECT(id: Int!) {
-//     updateProjekt(input: { id: $id, title: $title, slug: $title }) {
-//       clientMutationId
-//     }
-//   }
-// `;
-
-export default function PlaceImages({ projectId }) {
+export default function PlaceImages({ projectId, permalink }) {
   console.log(projectId);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -62,32 +60,27 @@ export default function PlaceImages({ projectId }) {
 
   return (
     <div>
-      <h1
-        className='text-center'
-        style={{
-          width: '1000px',
-          margin: '35px',
-        }}
-      >
-        Layout for {data.projekt.title}
-      </h1>
-      <p
-        style={{
-          width: '1000px',
-          margin: '0 35px',
-        }}
-        className='text-center'
-      >
-        {isSaving ? 'updating...' : 'saved!'}
-      </p>
-      <div
-        style={{
-          width: '1000px',
-          height: '4000px',
-          margin: '35px',
-          outline: '3px solid lightgrey',
-        }}
-      >
+      <PlacingHeader
+        loading={isSaving}
+        title={data.projekt.title}
+        permalink={permalink}
+      />
+
+      <StyledLayoutContainer>
+        <StyledLayoutPattern>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </StyledLayoutPattern>
         {data &&
           data.projekt.acf.fotos.map((image, index) => (
             <RenderImage
@@ -105,7 +98,7 @@ export default function PlaceImages({ projectId }) {
             leadpos={data.projekt.acf.leadpos}
           />
         )}
-      </div>
+      </StyledLayoutContainer>
     </div>
   );
 }

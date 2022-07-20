@@ -6,6 +6,7 @@ import LogIn from '../components/LogIn';
 import styles from '../styles/Home.module.css';
 import { useRouter } from 'next/router';
 import PlaceProjects from '../components/PlaceProjects';
+import PleaseSignIn from '../components/PleaseSignIn';
 
 export default function Home() {
   const router = useRouter();
@@ -20,7 +21,12 @@ export default function Home() {
 
       <main>
         <ClientOnly>
-          <PlaceProjects pageId={router.query.pageid} />
+          <PleaseSignIn>
+            <PlaceProjects
+              pageId={router.query.pageid}
+              permalink={router.query.permalink}
+            />
+          </PleaseSignIn>
         </ClientOnly>
       </main>
 

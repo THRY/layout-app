@@ -2,12 +2,16 @@ import useForm from '../lib/useForm';
 import { gql, useMutation } from '@apollo/client';
 import DisplayError from './ErrorMessage';
 import { useRouter } from 'next/router';
+import { CURRENT_USER_QUERY } from './User';
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($username: String!, $password: String!) {
     login(input: { password: $password, username: $username }) {
       authToken
       refreshToken
+      user {
+        id
+      }
     }
   }
 `;
@@ -33,10 +37,11 @@ export default function LogIn() {
     console.log(res);
     localStorage.setItem('token', res.data.login.authToken);
     localStorage.setItem('refreshToken', res.data.login.refreshToken);
+    localStorage.setItem('user', res.data.login.user.id);
     resetForm();
 
     if (res.data.login.authToken) {
-      router.push('/');
+      router.reload();
     }
   }
 
