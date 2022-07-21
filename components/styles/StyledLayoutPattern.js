@@ -6,7 +6,7 @@ export const StyledLayoutPattern = styled.div`
   height: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: ${(props) => (props.nopadding ? '0' : '0 20px')};
 
   div {
     flex: 0 1 60px;

@@ -84,9 +84,10 @@ export default function PlaceProjects({ pageId, permalink }) {
         loading={isSaving}
         title={data.page.title}
         permalink={permalink}
+        linktext='Zur Seite'
       />
       <StyledLayoutContainer>
-        <StyledLayoutPattern>
+        <StyledLayoutPattern className='gugus' nopadding={true}>
           <div></div>
           <div></div>
           <div></div>

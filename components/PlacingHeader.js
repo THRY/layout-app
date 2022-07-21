@@ -57,7 +57,7 @@ const StyledHeader = styled.header`
   }
 `;
 
-export default function PlacingHeader({ title, loading, permalink }) {
+export default function PlacingHeader({ title, loading, permalink, linktext }) {
   return (
     <StyledHeader>
       <h1>
@@ -65,14 +65,14 @@ export default function PlacingHeader({ title, loading, permalink }) {
         <span>
           {' '}
           {loading ? (
-            <img class='loader' src='/Dual Ring-1s-200px.gif' />
+            <img className='loader' src='/Dual Ring-1s-200px.gif' />
           ) : (
             <img src='noun-done-4762005.svg' />
           )}
         </span>
       </h1>
       <a href={permalink} target='_blank' rel='noreferrer'>
-        zum Projekt
+        {linktext ? linktext : 'zum Projekt'}
       </a>
     </StyledHeader>
   );
