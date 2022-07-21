@@ -1,5 +1,11 @@
 @import url('https://use.typekit.net/sxv8vph.css');
 
+@font-face {
+  font-family: 'BoogyBrut';
+  src: url('/fonts/Boogy_Brut_WEBL-Light.woff') format('woff'),
+    url('/fonts/Boogy_Brut_WEBL-Light.woff2') format('woff2');
+}
+
 html,
 body {
   padding: 0;

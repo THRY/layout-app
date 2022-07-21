@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { Rnd } from 'react-rnd';
 import jQuery from 'jquery';
+import styled from 'styled-components';
 
 const style = {
   display: 'flex',
@@ -23,6 +24,12 @@ const UPDATE_LEADPOS_MUTATION = gql`
       clientMutationId
     }
   }
+`;
+
+const StyledLead = styled.h2`
+  font-family: 'BoogyBrut', serif;
+  font-size: 42px;
+  line-height: 1.5em;
 `;
 
 export default function RenderLead({ lead, leadpos, projectId, setIsSaving }) {
@@ -94,7 +101,7 @@ export default function RenderLead({ lead, leadpos, projectId, setIsSaving }) {
       lockAspectRatio={true}
       enableResizing={false}
     >
-      <p>{lead}</p>
+      <StyledLead>{lead}</StyledLead>
     </Rnd>
   );
 }

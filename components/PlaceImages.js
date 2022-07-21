@@ -19,6 +19,9 @@ export const QUERY_PROJEKT = gql`
         lead
         leadpos
         fotos {
+          acf_media {
+            coords
+          }
           id
           guid
           databaseId
@@ -36,6 +39,19 @@ export const QUERY_PROJEKT = gql`
   }
 `;
 
+export const StyledLoader = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 50px;
+    height: auto;
+  }
+`;
+
 export default function PlaceImages({ projectId, permalink }) {
   console.log(projectId);
   const router = useRouter();
@@ -49,7 +65,11 @@ export default function PlaceImages({ projectId, permalink }) {
   });
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return (
+      <StyledLoader>
+        <img src='Dual Ring-1s-200px.gif' />
+      </StyledLoader>
+    );
   }
 
   if (error) {

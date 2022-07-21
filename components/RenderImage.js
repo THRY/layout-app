@@ -18,10 +18,8 @@ const style = {
 };
 
 const UPDATE_MEDIA_ITEM = gql`
-  mutation UPDATE_MEDIA_ITEM($id: ID!, $description: String!, $coords: String) {
-    updateMediaItem(
-      input: { id: $id, description: $description, coords: $coords }
-    ) {
+  mutation UPDATE_MEDIA_ITEM($id: ID!, $coords: String) {
+    updateMediaItem(input: { id: $id, coords: $coords }) {
       clientMutationId
       mediaItem {
         description
@@ -38,12 +36,13 @@ export default function RenderImage({ image, projectId, setIsSaving }) {
   let imageCoords = null;
   let trimmedCoords = {};
 
-  if (image.description && image.description !== '') {
-    let trimmedCoords = jQuery(image.description).text();
-    trimmedCoords = trimmedCoords.replace(/“|”|″/g, `"`);
+  if (image.acf_media.coords && image.acf_media.coords !== '') {
+    // let trimmedCoords = jQuery(image.acf_media.coords).text();
+    //trimmedCoords = trimmedCoords.replace(/“|”|″/g, `"`);
+
     // achtung trimmed cords wird wieder gespeichert in media item description
-    console.log(trimmedCoords);
-    trimmedCoords = JSON.parse(trimmedCoords);
+
+    trimmedCoords = JSON.parse(image.acf_media.coords);
     imageCoords = trimmedCoords[projectId];
   }
 
@@ -62,14 +61,19 @@ export default function RenderImage({ image, projectId, setIsSaving }) {
 
   // prevent updating image on initial render
   const firstUpdate = useRef(true);
-  useLayoutEffect(() => {
+  // useLayoutEffect(() => {
+  //   if (firstUpdate.current) {
+  //     firstUpdate.current = false;
+  //     return;
+  //   }
+  // });
+
+  useEffect(() => {
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
     }
-  });
 
-  useEffect(() => {
     if (isChanging == false && firstUpdate.current == false) {
       updateImage();
     }
@@ -93,8 +97,8 @@ export default function RenderImage({ image, projectId, setIsSaving }) {
     const res = await updateMediaItem({
       variables: {
         id: image.id,
-        description: JSON.stringify(coords),
-        coords: 'gugus',
+        // description: JSON.stringify(coords),
+        coords: JSON.stringify(coords),
       },
     });
   };

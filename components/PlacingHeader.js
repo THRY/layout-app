@@ -11,12 +11,21 @@ const StyledHeader = styled.header`
     justify-content: space-between;
     align-items: center;
 
-    img {
-      width: 40px;
-      height: auto;
+    span {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      &.loader {
-        width: 50px;
+      img {
+        width: 40px;
+        height: auto;
+
+        &.loader {
+          width: 50px;
+        }
       }
     }
   }

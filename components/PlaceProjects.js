@@ -9,6 +9,7 @@ import RenderProject from './RenderProject';
 import StyledLayoutContainer from './styles/StyledLayoutContainer';
 import StyledLayoutPattern from './styles/StyledLayoutPattern';
 import PlacingHeader from './PlacingHeader';
+import { StyledLoader } from './PlaceImages';
 
 export const QUERY_PAGE = gql`
   query QUERY_PAGE($id: ID!) {
@@ -61,7 +62,11 @@ export default function PlaceProjects({ pageId, permalink }) {
   });
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return (
+      <StyledLoader>
+        <img src='Dual Ring-1s-200px.gif' />
+      </StyledLoader>
+    );
   }
 
   if (error) {

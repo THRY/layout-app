@@ -3,6 +3,7 @@ import { gql, useMutation } from '@apollo/client';
 import DisplayError from './ErrorMessage';
 import { useRouter } from 'next/router';
 import { CURRENT_USER_QUERY } from './User';
+import styled from 'styled-components';
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($username: String!, $password: String!) {
@@ -11,6 +12,39 @@ const LOGIN_MUTATION = gql`
       refreshToken
       user {
         id
+      }
+    }
+  }
+`;
+
+const StyledForm = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 100px;
+
+    input {
+      margin-bottom: 1em;
+      width: 250px;
+      border: 1px solid black;
+      height: 2.5em;
+    }
+
+    button {
+      background-color: white;
+      border: 2px solid black;
+      color: black;
+      flex: 0 1 auto;
+
+      &:hover {
+        background-color: black;
+        color: white;
       }
     }
   }
@@ -46,25 +80,31 @@ export default function LogIn() {
   }
 
   return (
-    <div>
+    <StyledForm>
       <form onSubmit={onSubmit}>
-        <p>Username</p>
+        <label htmlFor='usernam'>Username</label>
         <input
           type='text'
           name='username'
+          id='username'
           onChange={handleChange}
           value={inputs.username}
+          className='p-1'
         ></input>
-        <p>Password</p>
+        <label htmlFor='password'>Password</label>
         <input
-          type='text'
+          type='password'
           name='password'
+          id='password'
           onChange={handleChange}
           value={inputs.password}
+          className='p-1'
         ></input>
-        <button type='submit'>Submit</button>
+        <button className='pt-2 pb-1 mt-3' type='submit'>
+          anmelden
+        </button>
         {error && <DisplayError error={error} />}
       </form>
-    </div>
+    </StyledForm>
   );
 }
