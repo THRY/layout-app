@@ -11,7 +11,10 @@ import { onError } from '@apollo/client/link/error';
 import { fromPromise, ApolloLink } from 'apollo-link';
 
 const httpLink = createHttpLink({
-  uri: 'http://severinjakob.local/graphql',
+  uri:
+    process.env.NODE_ENV == 'production'
+      ? 'https://severinjakob.thry.ch/graphql'
+      : 'http://severinjakob.local/graphql',
 });
 
 const REFRESH_TOKEN_MUTATION = gql`
