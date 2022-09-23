@@ -10,6 +10,7 @@ import StyledLayoutContainer from './styles/StyledLayoutContainer';
 import StyledLayoutPattern from './styles/StyledLayoutPattern';
 import PlacingHeader from './PlacingHeader';
 import { StyledLoader } from './PlaceImages';
+import styled from 'styled-components';
 
 export const QUERY_PAGE = gql`
   query QUERY_PAGE($id: ID!) {
@@ -47,6 +48,14 @@ export const QUERY_PAGE = gql`
       }
     }
   }
+`;
+
+const StyledLogo = styled.img`
+  width: 285px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 40px;
 `;
 
 export default function PlaceProjects({ pageId, permalink }) {
@@ -101,6 +110,8 @@ export default function PlaceProjects({ pageId, permalink }) {
           <div></div>
           <div></div>
         </StyledLayoutPattern>
+        <StyledLogo src='/sj-logo.svg' />
+
         {data &&
           data.page.acf_home.storyselection.map((story, index) => {
             if (story.featuredImage || story.acf.featuredVideo) {
