@@ -11,6 +11,7 @@ import StyledLayoutPattern from './styles/StyledLayoutPattern';
 import PlacingHeader from './PlacingHeader';
 import { StyledLoader } from './PlaceImages';
 import styled from 'styled-components';
+import { StyledHorizontalLayoutPattern } from './styles/StyledHorizontalLayoutPattern';
 
 export const QUERY_PAGE = gql`
   query QUERY_PAGE($id: ID!) {
@@ -96,20 +97,16 @@ export default function PlaceProjects({ pageId, permalink }) {
         linktext='Zur Seite'
       />
       <StyledLayoutContainer>
-        <StyledLayoutPattern className='gugus' nopadding={true}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+        <StyledLayoutPattern nopadding={true}>
+          {Array.from(Array(10).keys()).map((item, index) => (
+            <div key={index}></div>
+          ))}
         </StyledLayoutPattern>
+        <StyledHorizontalLayoutPattern>
+          {Array.from(Array(70).keys()).map((item, index) => (
+            <div key={index}></div>
+          ))}
+        </StyledHorizontalLayoutPattern>
         <StyledLogo src='/sj-logo.svg' />
 
         {data &&

@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import StyledLayoutContainer from './styles/StyledLayoutContainer';
 import StyledLayoutPattern from './styles/StyledLayoutPattern';
 import PlacingHeader from './PlacingHeader';
+import StyledHorizontalLayoutPattern from './styles/StyledHorizontalLayoutPattern';
 
 export const QUERY_PROJEKT = gql`
   query QUERY_PROJEKT($id: ID!) {
@@ -87,20 +88,16 @@ export default function PlaceImages({ projectId, permalink }) {
       />
 
       <StyledLayoutContainer>
-        <StyledLayoutPattern>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+        <StyledLayoutPattern nopadding={false}>
+          {Array.from(Array(10).keys()).map((item, index) => (
+            <div key={index}></div>
+          ))}
         </StyledLayoutPattern>
+        <StyledHorizontalLayoutPattern>
+          {Array.from(Array(70).keys()).map((item, index) => (
+            <div key={index}></div>
+          ))}
+        </StyledHorizontalLayoutPattern>
         {data &&
           data.projekt.acf.fotos.map((image, index) => (
             <RenderImage
