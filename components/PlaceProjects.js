@@ -55,7 +55,7 @@ const StyledLogo = styled.img`
   width: 285px;
   height: auto;
   position: absolute;
-  top: 0;
+  top: 30px;
   left: 40px;
 `;
 

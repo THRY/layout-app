@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { Rnd } from 'react-rnd';
 import jQuery from 'jquery';
+import styled from 'styled-components';
 
 const style = {
   display: 'flex',
   alignItems: 'center',
+  flexDirection: 'column',
   justifyContent: 'center',
   border: '0',
   background: 'transparent',
@@ -16,6 +18,22 @@ const style = {
     opacity: '0.6',
   },
 };
+
+const StyledButton = styled.button`
+  background-color: white;
+  border-radius: 25px;
+  border: 1px solid black;
+  padding: 3px 12px;
+  font-size: 15px;
+  margin-top: auto;
+  margin-bottom: 25px;
+
+  &:hover {
+    background-color: black;
+    color: white;
+    border-color: white;
+  }
+`;
 
 const UPDATE_PROJECT = gql`
   mutation UPDATE_PROJECT($id: ID!, $storycoords: String!) {
@@ -35,10 +53,12 @@ export default function RenderProject({
   const [isChanging, setChange] = useState(false);
 
   let ratio = image.mediaDetails.height / image.mediaDetails.width;
+  console.log(ratio);
   let projectCoords = null;
 
   if (homecoords && homecoords !== '') {
     projectCoords = JSON.parse(homecoords);
+    console.log(projectCoords);
   }
 
   const [state, setState] = useState({
@@ -83,6 +103,14 @@ export default function RenderProject({
     });
   };
 
+  const onResetClick = () => {
+    setState({
+      ...state,
+      width: 200,
+      height: 200 * ratio,
+    });
+  };
+
   return (
     <Rnd
       style={{
@@ -117,7 +145,17 @@ export default function RenderProject({
         setChange(false);
       }}
     >
-      {image.mimeType == 'video/mp4' && <p className='m-0'>{image.title}</p>}
+      {image.mimeType == 'video/mp4' && (
+        <p className='m-0 mt-3'>«{image.title}»</p>
+      )}
+      <StyledButton
+        type='button'
+        onClick={() => {
+          onResetClick();
+        }}
+      >
+        Refetch {image.mimeType == 'video/mp4' ? 'Video' : 'Image'}
+      </StyledButton>
     </Rnd>
   );
 }
