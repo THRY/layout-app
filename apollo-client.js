@@ -79,7 +79,16 @@ const errorLink = onError(
       console.log(err);
       switch (err.extensions.category) {
         case 'user':
+          let errorPath = err.path[0];
+
+          if (errorPath == 'refreshJwtAuthToken') {
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
+            break;
+          }
+
           const refreshToken = localStorage.getItem('refreshToken');
+
           return fromPromise(
             refreshAuthToken(refreshToken).catch((error) => {
               // Handle token refresh errors e.g clear stored tokens, redirect to login

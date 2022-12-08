@@ -64,11 +64,8 @@ export default function LogIn() {
 
   async function onSubmit(e) {
     e.preventDefault();
-    console.log(e);
-    console.log(inputs);
 
     const res = await login();
-    console.log(res);
     localStorage.setItem('token', res.data.login.authToken);
     localStorage.setItem('refreshToken', res.data.login.refreshToken);
     localStorage.setItem('user', res.data.login.user.id);
@@ -78,6 +75,8 @@ export default function LogIn() {
       router.reload();
     }
   }
+
+  if (error) return <p>error</p>;
 
   return (
     <StyledForm>
