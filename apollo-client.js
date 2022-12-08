@@ -13,7 +13,7 @@ import { fromPromise, ApolloLink } from 'apollo-link';
 const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV == 'production'
-      ? 'https://severinjakob.thry.ch/graphql'
+      ? 'https://www.severinjakob.com/graphql'
       : 'http://severinjakob.local/graphql',
 });
 
